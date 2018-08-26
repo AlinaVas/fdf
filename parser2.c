@@ -90,7 +90,8 @@ int		hex_to_dec(char *s)
 		res += *s - 'a' + 10;
 	else
 		res += 0;
-	s--;
+	if (*(--s) == ',')
+		return (res);
 	if (*s >= '0' && *s <= '9')
 		res += (*s - '0') * 16;
 	else if (*s >= 'A' && *s <= 'F')
@@ -114,11 +115,11 @@ int		get_color(char *dot)
 	while (*tmp)
 		tmp++;
 	b = hex_to_dec(tmp - 1);
-	if (b < 16)
+	if (b < 16 && *(tmp - 3) == ',')
 		return (b);
 	g = hex_to_dec(tmp - 3);
-	if (g < 16)
+	if (g < 16 && *(tmp - 5) == ',')
 		return (g << 8 | b);
-	r = hex_to_dec(tmp + 5);
+	r = hex_to_dec(tmp - 5);
 	return (r << 16 | g << 8 | b);
 }
